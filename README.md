@@ -1,8 +1,8 @@
-## HyperVerge Aadhar Offline Android SDK 
+## HyperVerge Aadhaar Offline Android SDK 
 
 
 ## OVERVIEW 
-HyperVerge Aadhar Offline Android SDK helps FinTech companies to onboard customers by using the Aadhar XML provided by UIDAI. The onboarding process is completly paperless and the SDK takes care of downloading the Aadhar XML document from UIDAI and verifying the authencity of the customer. 
+HyperVerge Aadhaar Offline Android SDK helps FinTech companies to onboard customers by using the Aadhaar XML provided by UIDAI. The onboarding process is completly paperless and the SDK takes care of downloading the Aadhaar XML document from UIDAI and verifying the authencity of the customer. 
 
 
 ## PREREQUISITES
@@ -23,8 +23,10 @@ The SDK supports all Android flavours above 19 (Android 4.4 Kitkat)  and upto An
 - [SDK CUSTOMIZATIONS](#sdk-customizations)
     - [Toolbar customization](#toolbar-customization)
     - [Face match customization](#face-match-customization)
+    - [Tutorial customization](#tutorial-customization)
     - [Example for adding customizations to the KYC flow](#example-for-adding-customizations-to-the-kyc-flow)
     - [Customization table](#customization-table)
+    - [HVAadhaarOfflineError](#hvaadhaarofflineerror)
 - [CONTACT US](#contact-us)
 
 ## INTEGRATION STEPS
@@ -51,119 +53,105 @@ allprojects {
 
 ```
 dependencies {
-  implementation('co.hyperverge:offlinekyc:1.0.1@aar', {
+  implementation('co.hyperverge:offlinekyc:1.0.4@aar', {
     transitive = true
     exclude group: 'androidx.appcompat', module: 'appcompat'
-    exclude group: 'androidx.legacy', module: 'legacy-support-v4'
-    exclude group: 'androidx.navigation', module: 'navigation-ui'
   })
 }
 ```
 
 Please sync your project to download the dependecies. 
 
+
 ### 2. Initialising the SDK
 
-1. Initialise the SDK in your ```Application``` class and make sure the class is added in your ```AndroidManifest.xml```
+1. To initialize the SDK, add the following line to your app before calling any of the SDK functionalities. For example, you can add it to the `onCreate` method of the application class.
 
 ```
 @Override
 public void onCreate() {
   super.onCreate();
-  HyperVergeOfflineKYCSDK.init("your_app_id_here", "your_app_key_here");
+  HVAadhaarOfflineSDK.init("your_app_id_here", "your_app_key_here");
 }
 ```
 
-Add the Application class in AndroidManifest.xml
+2. Initiate Aadhaar Offline KYC flow
 
 ```
-<application
-  android:name="your_application_class_name"
->
+    // 1. set properties
+    HVAadhaarOfflineConfig hvAadhaarOfflineConfig = new HVAadhaarOfflineConfig().builder().build();
+
+    // 2. Handle completion callback
+    AadhaarOfflineStartCallback completionCallback = new AadhaarOfflineStartCallback() {
+      @Override
+      public void aadhaarOfflineOnSuccess(JSONObject jsonObject) {
+        // Handle the success event with your logic
+      }
+
+      @Override
+      public void aadhaarOfflineOnError(HVAadhaarOfflineError hvAadhaarOfflineError) {
+        // Handle the error event with your logic
+      }
+    };
+ 
+ HVAadhaarOfflineManager.getInstance()
+ .start(context, hvAadhaarOfflineConfig, completionCallback, null);
 ```
+Where,
 
-> Note: It is advisable to not have the secret hard coded in the app. It should be fetched from your backend server.
+- context: is the context of the current Activity being displayed.
+- hvAadhaarOfflineConfig: Object of type ```HVAadhaarOfflineConfig```. This provides properties to customise the KYC flow. Here's a full list of customisations.
+- completetionCallback: Object of type ```AadhaarOfflineStartCallback``` interface. Provides callback methods to handle success and error flows. The ```aadhaarOfflineOnSuccess``` provides a JSONObject with results and the ```aadhaarOfflineOnError``` returns an object of type ```HVAadhaarOfflineError``` with error codes and error messages. List of error codes can be found [here](#hvaadhaarofflineerror).
+- eventsCallback: Object of type ```AadhaarOfflineEventsCallback``` interface. Provides callback methods for various user interactions within the SDK. It has been set to `null` in the sample code
 
-2. Initiate Aadhar Offline KYC flow with default customisations
-
-```
-public class YourActivity extends AppCompatActivity {
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_test);
-
-    AadharOfflineKycManager.getInstance().start(activity_context, this);
-
-  }
-}
-```
-
-3. Handle the success and error events
-
-```
-public class YourActivity extends AppCompatActivity implements AadharOfflineStartCallback {
-  @Override
-  public void aadharOfflineOnSuccess(SuccessDTO successDTO) {
-    // Handle the success event with your logic
-  }
-
-  @Override  
-  public void aadharOfflineOnError(ErrorDTO errorDTO) {
-    // Handle the error event with your logic
-  }
-}
-```
 
 ## SDK CUSTOMIZATIONS
 
-You can customize the Aadhar Offline requests using the ```AadharOfflineConfig```  object.
+You can customize the Aadhaar Offline requests using the ```AadhaarOfflineConfig```  object.
 
 ### Toolbar customization
 
 Show ```Toolbar``` and toolbar title
 	
 ```
-AadharOfflineConfig aadharOfflineConfig =  
-    AadharOfflineConfig.builder()
-        .shouldShowToolBar(true)
-        .uploadToolbarTitle("Complete your KYC")
-        .build()
+hvAadhaarOfflineConfig.setShouldShowUploadToolBar(true);
+hvAadhaarOfflineConfig.setUploadToolbarTitle("Complete your KYC");
 ```
 
 ### Face match customization
 
-Make a face match call to verify the photo in the Aadhar XML and the picture of the user
+Make a face match call to verify the photo in the Aadhaar XML and the picture of the user
 
 ```
-AadharOfflineConfig aadharOfflineConfig =  
-    AadharOfflineConfig.builder()  
-        .faceMatch(true)
-        .selfieImageFile(file)
-        .build()
+hvAadhaarOfflineConfig.setShouldMakeFaceMatchCall(true);
+hvAadhaarOfflineConfig.setSelfieImageUri("/storage/emulated/0/DCIM/Camera/20141219_133139.jpg");
 ```
 
 > Pro Tip : To increase the accuracy of face match results, please use the [HyperSnap SDK](https://github.com/hyperverge/capture-android-sdk) which takes care of optimising images with respect to resolutions, aspect ratio, image rotation and other parameters.
+
+### Tutorial customization
+
+Add your own URLs to show tutorials to users to help them understand the KYC flow
+
+```
+hvAadhaarOfflineConfig.setShowTutorial(true);
+hvAadhaarOfflineConfig.setTutorialUrl("https://www.hyperverge.co");
+```
+
  
 ### Example for adding customizations to the KYC flow
 
 ```
-public class YourActivity extends AppCompatActivity implements AadharOfflineStartCallback {  
+public class YourActivity extends AppCompatActivity implements AadhaarOfflineStartCallback {  
   
   @Override  
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_test);
     
-    AadharOfflineConfig aadharOfflineConfig = AadharOfflineConfig.builder()
-            .shouldShowToolBar(true)
-            .uploadToolbarTitle("Complete your KYC")
-            .faceMatch(true)
-            .selfieImageFile(selfieImageFile)
-            .build();
+    HVAadhaarOfflineConfig hvAadhaarOfflineConfig = new HVAadhaarOfflineConfig();
+hvAadhaarOfflineConfig.setSelfieImageUri("<imageUri from capture SDK>")
     
-    AadharOfflineKycManager.getInstance().start(this, aadharOfflineConfig, this);  
-  
   }
 ```
 
@@ -171,10 +159,25 @@ public class YourActivity extends AppCompatActivity implements AadharOfflineStar
 
 | Config | Type | Description | 
 | ------ | ------ | ------ |
-| faceMatch | boolean | When set to true, face match is checked with the image provided |
-| selfieImageFile | File |  Works with the faceMatch config. Uploads the image file to check for face match|
+| shouldMakeFaceMatchCall | boolean | When set to true, face match is checked with the image provided |
+| selfieImageUri | String |  Works with the faceMatch config. Uploads the image file to check for face match|
 | shouldShowToolBar | boolean | Toolbar is shown when this is set to true |
 | uploadToolbarTitle | String | Sets a custom Toolbar title |
+| tutorialUrl | String | Set a custom tutorial webpage. Defaults to HyperVerge Tutorials if no value is provided |
+| showTutorial | boolean | Tutorials are shown when set|
+
+
+### HVAadhaarOfflineError
+
+| Code | Description | Explanation | Action |
+| ------ | ------ | ------ | ------ |
+| 2 | Internal SDK Error | Occurs when an unexpected error has happened with the HyperSnapSDK. | Notify HyperVerge |
+| 3 | Operation Cancelled By User | When the user closes KYC flow. | Try again |
+| 4 | Permissions not granted by the user | When user denies runtime permissions | In the settings app, give permission and try again. |
+| 12 | Network Error | Occurs when the internet is either non-existant or very patchy. | Check internet and try again. If Internet is proper, contact HyperVerge. |
+
+
 
 ## Contact Us
-If you are interested in integrating this SDK, please do send us a mail at [contact@hyperverge.co](mailto:contact@hyperverge.co) explaining your use case. We will give you the `aws_access_key` & `aws_secret_pass` so that you can try it out. Learn more about HyperVerge [here](http://hyperverge.co/).
+If you are interested in integrating this SDK, please send us a mail at [contact@hyperverge.co](mailto:contact@hyperverge.co) explaining your use case.  
+Learn more about HyperVerge [here](http://hyperverge.co/).
