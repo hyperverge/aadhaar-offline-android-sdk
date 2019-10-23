@@ -24,6 +24,10 @@ The SDK supports all Android flavours above 19 (Android 4.4 Kitkat)  and upto An
     - [Toolbar customization](#toolbar-customization)
     - [Face match customization](#face-match-customization)
     - [Tutorial customization](#tutorial-customization)
+    - [Show attach ZIP file attach button](#show-attach-zip-file-attach-button)
+    - [Verify phone and email](#verify-phone-and-email)
+    - [Button Customizations](#button-customizations)
+    - [Button Customization Example](#button-customization-example)
     - [Example for adding customizations to the KYC flow](#example-for-adding-customizations-to-the-kyc-flow)
     - [Customization table](#customization-table)
     - [HVAadhaarOfflineError](#hvaadhaarofflineerror)
@@ -53,9 +57,8 @@ allprojects {
 
 ```
 dependencies {
-  implementation('co.hyperverge:offlinekyc:1.0.4@aar', {
+  implementation('co.hyperverge:offlinekyc:1.0.4.12@aar', {
     transitive = true
-    exclude group: 'androidx.appcompat', module: 'appcompat'
   })
 }
 ```
@@ -101,7 +104,7 @@ Where,
 
 - context: is the context of the current Activity being displayed.
 - hvAadhaarOfflineConfig: Object of type ```HVAadhaarOfflineConfig```. This provides properties to customise the KYC flow. Here's a full list of customisations.
-- completetionCallback: Object of type ```AadhaarOfflineStartCallback``` interface. Provides callback methods to handle success and error flows. The ```aadhaarOfflineOnSuccess``` provides a JSONObject with results and the ```aadhaarOfflineOnError``` returns an object of type ```HVAadhaarOfflineError``` with error codes and error messages. List of error codes can be found [here](#hvaadhaarofflineerror).
+- completionCallback: Object of type ```AadhaarOfflineStartCallback``` interface. Provides callback methods to handle success and error flows. The ```aadhaarOfflineOnSuccess``` provides a JSONObject with results and the ```aadhaarOfflineOnError``` returns an object of type ```HVAadhaarOfflineError``` with error codes and error messages. List of error codes can be found [here](#hvaadhaarofflineerror).
 - eventsCallback: Object of type ```AadhaarOfflineEventsCallback``` interface. Provides callback methods for various user interactions within the SDK. It has been set to `null` in the sample code
 
 
@@ -138,6 +141,33 @@ hvAadhaarOfflineConfig.setShowTutorial(true);
 hvAadhaarOfflineConfig.setTutorialUrl("https://www.hyperverge.co");
 ```
 
+### Show attach ZIP file attach button
+Enable the attach button to show always to allow users to manually attach zip files. If ```showManualFileAttachButton``` is not set, the button is not shown until we can't locate the downloaded zip files or the user closes the Aadhaar website. 
+```
+hvAadhaarOfflineConfig.setShowManualFileAttachButton(true);
+```
+### Verify phone and email
+Send phone and email ID of users to verify against the XML file submitted 
+```
+hvAadhaarOfflineConfig.setEmail("contact@hyperverge.co");
+hvAadhaarOfflineConfig.setPhone("9009009009");
+```
+### Button Customizations
+By default all buttons use HyperVerge's default branding style. Customizations are allowed by overriding the specific button styles in your app's styles.xml file
+*  HVDownloadAadhaarButtonStyle - Allows customizations to the 'Download Aadhaar' button  
+*  HVAttachZipFileButtonStyle - Allows customizations to the 'Attach File' button  
+*  HVSubmitButtonStyle - Allows customizations to the 'Submit Aadhaar' button  
+### Button Customization Example
+```
+ <style name="HVDownloadAadhaarButtonStyle" parent="Widget.AppCompat.Button.Colored">
+    <item name="colorControlHighlight">@color/colorPrimary</item>
+    <item name="colorButtonNormal">@color/colorAccent</item>
+    <item name="android:textColor">@color/white</item>
+    <item name="colorAccent">@color/colorAccent</item>
+    <item name="android:textSize">20sp</item>
+    <item name="android:fontFamily">@font/roboto_thin</item>
+  </style>
+```
  
 ### Example for adding customizations to the KYC flow
 
@@ -165,6 +195,9 @@ hvAadhaarOfflineConfig.setSelfieImageUri("<imageUri from capture SDK>")
 | uploadToolbarTitle | String | Sets a custom Toolbar title |
 | tutorialUrl | String | Set a custom tutorial webpage. Defaults to HyperVerge Tutorials if no value is provided |
 | showTutorial | boolean | Tutorials are shown when set|
+| showManualFileAttachButton | boolean | Shows a button always that enables users to attach ZIP files manually from the device|
+| phone | String | Sets the phone to be verified against the Aadhaar XML file|
+| email | String | Sets the email ID to be verified against the Aadhar XML file|
 
 
 ### HVAadhaarOfflineError
