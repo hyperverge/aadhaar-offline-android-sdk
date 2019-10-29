@@ -142,7 +142,7 @@ hvAadhaarOfflineConfig.setTutorialUrl("https://www.hyperverge.co");
 ```
 
 ### Show attach ZIP file attach button
-Enable the attach button to show always to allow users to manually attach zip files. If ```showManualFileAttachButton``` is not set, the button is not shown until we can't locate the downloaded zip files or the user closes the Aadhaar website. 
+Enable the attach button to show always to allow users to manually attach zip files, this might be useful for repeat customers or cases when the user is likely to have the XML pre-downloaded. If ```showManualFileAttachButton``` is not set, the button is not shown until we can't locate the downloaded zip files or the user closes the Aadhaar website. 
 ```
 hvAadhaarOfflineConfig.setShowManualFileAttachButton(true);
 ```
