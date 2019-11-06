@@ -57,7 +57,7 @@ allprojects {
 
 ```
 dependencies {
-  implementation('co.hyperverge:offlinekyc:1.0.4.13@aar', {
+  implementation('co.hyperverge:offlinekyc:1.0.5@aar', {
     transitive = true
   })
 }
@@ -138,7 +138,7 @@ Add your own URLs to show tutorials to users to help them understand the KYC flo
 
 ```
 hvAadhaarOfflineConfig.setShowTutorial(true);
-hvAadhaarOfflineConfig.setTutorialUrl("https://www.hyperverge.co");
+hvAadhaarOfflineConfig.setTutorialUrl("https://hyperverge.co/tutorials/aadhaar-xml/");
 ```
 
 ### Show attach ZIP file attach button
