@@ -31,7 +31,7 @@ The SDK supports all Android flavours above 19 (Android 4.4 Kitkat)  and upto An
     - [Example for adding customizations to the KYC flow](#example-for-adding-customizations-to-the-kyc-flow)
     - [Customization table](#customization-table)
 - [HVAadhaarOfflineError](#hvaadhaarofflineerror)
-- [Events Callback] (#events-callback)
+- [Events Callback](#events-callback)
 - [CONTACT US](#contact-us)
 
 ## INTEGRATION STEPS
@@ -210,7 +210,9 @@ hvAadhaarOfflineConfig.setSelfieImageUri("<imageUri from capture SDK>")
 | 4 | Permissions not granted by the user | When user denies runtime permissions | In the settings app, give permission and try again. |
 | 12 | Network Error | Occurs when the internet is either non-existant or very patchy. | Check internet and try again. If Internet is proper, contact HyperVerge. |
 
+
 ## Events Callback
+
 Event callbacks are fired whenever users interact with the SDK. For example, callbacks are fired when users enter the share code and submit the Aadhaar Zip file. This will help you to take decisions or track user actions.
 
 Handling event callbacks - 
