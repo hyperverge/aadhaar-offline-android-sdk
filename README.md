@@ -30,7 +30,8 @@ The SDK supports all Android flavours above 19 (Android 4.4 Kitkat)  and upto An
     - [Button Customization Example](#button-customization-example)
     - [Example for adding customizations to the KYC flow](#example-for-adding-customizations-to-the-kyc-flow)
     - [Customization table](#customization-table)
-    - [HVAadhaarOfflineError](#hvaadhaarofflineerror)
+- [HVAadhaarOfflineError](#hvaadhaarofflineerror)
+- [Events Callback] (#events-callback)
 - [CONTACT US](#contact-us)
 
 ## INTEGRATION STEPS
@@ -57,7 +58,7 @@ allprojects {
 
 ```
 dependencies {
-  implementation('co.hyperverge:offlinekyc:1.0.5@aar', {
+  implementation('co.hyperverge:offlinekyc:1.0.6@aar', {
     transitive = true
   })
 }
@@ -200,7 +201,7 @@ hvAadhaarOfflineConfig.setSelfieImageUri("<imageUri from capture SDK>")
 | email | String | Sets the email ID to be verified against the Aadhar XML file|
 
 
-### HVAadhaarOfflineError
+## HVAadhaarOfflineError
 
 | Code | Description | Explanation | Action |
 | ------ | ------ | ------ | ------ |
@@ -209,7 +210,57 @@ hvAadhaarOfflineConfig.setSelfieImageUri("<imageUri from capture SDK>")
 | 4 | Permissions not granted by the user | When user denies runtime permissions | In the settings app, give permission and try again. |
 | 12 | Network Error | Occurs when the internet is either non-existant or very patchy. | Check internet and try again. If Internet is proper, contact HyperVerge. |
 
+## Events Callback
+Event callbacks are fired whenever users interact with the SDK. For example, callbacks are fired when users enter the share code and submit the Aadhaar Zip file. This will help you to take decisions or track user actions.
 
+Handling event callbacks - 
+
+```
+public class YourActivity extends AppCompatActivity {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_test);
+
+    // Event callback handler
+    AadhaarOfflineEventsCallback eventsCallback = new AadhaarOfflineEventsCallback() {
+      @Override
+      public void onDownloadClick() {
+        // Callback when user taps on Download button to open the Aadhaar website
+      }
+
+      @Override
+      public void onDownloadFinish() {
+        // Callback when the download has finished
+      }
+
+      @Override
+      public void onFileAttach() {
+        // Callback when the file has been attached
+      }
+
+      @Override
+      public void onShareCodeEntered() {
+        // Callback when the share code is entered. This is called only when share code length entered by the user is 4
+      }
+
+      @Override
+      public void onShareCodeCleared() {
+        // Callback when the share code is cleared by the user. This is called only when share code length 0
+      }
+
+      @Override
+      public void onSubmit(File file, String shareCode) {
+        // Callback when user taps the Submit button to upload the Aadhaar XML file to HyperVerge servers
+      }
+    };
+
+    // Call start to start the Aadhaar Offline KYC flow
+    HVAadhaarOfflineManager.getInstance()
+        .start(context, hvAadhaarOfflineConfig, completionCallback, eventsCallback);
+  }
+}
+```
 
 ## Contact Us
 If you are interested in integrating this SDK, please send us a mail at [contact@hyperverge.co](mailto:contact@hyperverge.co) explaining your use case.  
