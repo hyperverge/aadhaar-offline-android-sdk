@@ -21,6 +21,7 @@ The SDK supports all Android flavours above 19 (Android 4.4 Kitkat)  and upto An
     1. [Adding the SDK to your project](#1-adding-the-sdk-to-your-project)
     2. [Initialising the SDK](#2-initialising-the-sdk)
 - [SDK CUSTOMIZATIONS](#sdk-customizations)
+    - [API customization](#api-customization)
     - [Toolbar customization](#toolbar-customization)
     - [Face match customization](#face-match-customization)
     - [Tutorial customization](#tutorial-customization)
@@ -59,7 +60,7 @@ allprojects {
 
 ```
 dependencies {
-  implementation('co.hyperverge:offlinekyc:1.0.6@aar', {
+  implementation('co.hyperverge:offlinekyc:1.2.2@aar', {
     transitive = true
   })
 }
@@ -113,6 +114,15 @@ Where,
 ## SDK CUSTOMIZATIONS
 
 You can customize the Aadhaar Offline requests using the ```AadhaarOfflineConfig```  object.
+
+### API customization
+
+Set the HyperVerge Offline KYC API. This is compulsory and a valid HyperVerge API needs to be set which will be used for processing the XML file and share code on HyperVerge servers
+
+```
+hvAadhaarOfflineConfig.setShouldShowUploadToolBar(true);
+hvAadhaarOfflineConfig.setOfflineKycApi("https://hv-aadhaar-xml.hyperverge.co/v2.1/readAadhaarXml");
+```
 
 ### Toolbar customization
 
@@ -224,7 +234,9 @@ hvAadhaarOfflineConfig.setSelfieImageUri("<imageUri from capture SDK>")
 | ------ | ------ | ------ | ------ |
 | 2 | Internal SDK Error | Occurs when an unexpected error has happened with the HyperSnapSDK. | Notify HyperVerge |
 | 3 | Operation Cancelled By User | When the user closes KYC flow. | Try again |
-| 4 | Permissions not granted by the user | When user denies runtime permissions | In the settings app, give permission and try again. |
+| 4 | Permissions not granted by the user | When user denies runtime permissions | Ask the user to give permission to complete the KYC flow |
+| 5 | Permissions denied by the user | When the user select 'Don't ask again' on the permission dialg box | In the settings app, give permission and try again |
+| 13 | No browsers present on the phone to download XML from Aadhaar website | When there's no browsers installed on the phone or when browsers are disabled | Ask the user to enable or install the browser - preferably Chrome browser for Android | 
 | 12 | Network Error | Occurs when the internet is either non-existant or very patchy. | Check internet and try again. If Internet is proper, contact HyperVerge. |
 
 
