@@ -59,7 +59,7 @@ allprojects {
 
 ```
 dependencies {
-  implementation('co.hyperverge:offlinekyc:1.0.6@aar', {
+  implementation('co.hyperverge:offlinekyc:1.2.4@aar', {
     transitive = true
   })
 }
