@@ -80,6 +80,8 @@ public void onCreate() {
 }
 ```
 
+> To integrate Offline KYC flow without using HyperVerge home screen, skip the next step and follow the instructions [here] (NO_HOME_SCREEN.md)
+
 2. Initiate Aadhaar Offline KYC flow
 
 ```
