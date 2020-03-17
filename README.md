@@ -21,6 +21,7 @@ The SDK supports all Android flavours above 19 (Android 4.4 Kitkat)  and upto An
     1. [Adding the SDK to your project](#1-adding-the-sdk-to-your-project)
     2. [Initialising the SDK](#2-initialising-the-sdk)
 - [SDK CUSTOMIZATIONS](#sdk-customizations)
+    - [Adding API](#adding-api)
     - [Toolbar customization](#toolbar-customization)
     - [Face match customization](#face-match-customization)
     - [Tutorial customization](#tutorial-customization)
@@ -116,6 +117,14 @@ Where,
 ## SDK CUSTOMIZATIONS
 
 You can customize the Aadhaar Offline requests using the ```AadhaarOfflineConfig```  object.
+
+### Adding APIs
+
+Set the HyperVerge Offline KYC API. This is compulsory and a valid HyperVerge API needs to be set which will be used for processing the XML file and share code on HyperVerge servers
+
+```
+hvAadhaarOfflineConfig.setOfflineKycApi("https://hv-aadhaar-xml.hyperverge.co/v2.1/readAadhaarXml");
+```
 
 ### Toolbar customization
 
