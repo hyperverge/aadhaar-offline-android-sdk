@@ -77,3 +77,13 @@ The ```isRedirected``` value will be set to true and ```file``` value will be th
     
   }
 ```
+
+  **6. Unbind the chrome service from your Activity ```onDestroy``` method**
+
+```
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        HVAadhaarOfflineManager.unBindChromeService();
+    }
+```
