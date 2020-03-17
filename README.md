@@ -21,7 +21,7 @@ The SDK supports all Android flavours above 19 (Android 4.4 Kitkat)  and upto An
     1. [Adding the SDK to your project](#1-adding-the-sdk-to-your-project)
     2. [Initialising the SDK](#2-initialising-the-sdk)
 - [SDK CUSTOMIZATIONS](#sdk-customizations)
-    - [Adding API](#adding-api)
+    - [Adding API](#adding-apis)
     - [Toolbar customization](#toolbar-customization)
     - [Face match customization](#face-match-customization)
     - [Tutorial customization](#tutorial-customization)
