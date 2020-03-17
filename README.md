@@ -60,7 +60,7 @@ allprojects {
 
 ```
 dependencies {
-  implementation('co.hyperverge:offlinekyc:1.0.6@aar', {
+  implementation('co.hyperverge:offlinekyc:1.2.5@aar', {
     transitive = true
   })
 }
@@ -227,7 +227,8 @@ hvAadhaarOfflineConfig.setSelfieImageUri("<imageUri from capture SDK>")
 | ------ | ------ | ------ | ------ |
 | 2 | Internal SDK Error | Occurs when an unexpected error has happened with the HyperSnapSDK. | Notify HyperVerge |
 | 3 | Operation Cancelled By User | When the user closes KYC flow. | Try again |
-| 4 | Permissions not granted by the user | When user denies runtime permissions | In the settings app, give permission and try again. |
+| 4 | Permissions not granted by the user | When user denies runtime permissions | Ask the user to give permission and try again |
+| 5 | Permissions denied permanently by the user | Occurs when user denies permission from the app settings | Open the app settings page and ask the user to manually allow permission |
 | 12 | Network Error | Occurs when the internet is either non-existant or very patchy. | Check internet and try again. If Internet is proper, contact HyperVerge. |
 
 ## API Calls
