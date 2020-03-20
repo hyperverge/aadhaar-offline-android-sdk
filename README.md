@@ -240,6 +240,8 @@ hvAadhaarOfflineConfig.setSelfieImageUri("<imageUri from capture SDK>")
 | 5 | Permissions denied permanently by the user | Occurs when user denies permission from the app settings | Open the app settings page and ask the user to manually allow permission |
 | 12 | Network Error | Occurs when the internet is either non-existant or very patchy. | Check internet and try again. If Internet is proper, contact HyperVerge. |
 
+>Note: Refer to the API documentation shared to handle API error and the respective error code
+
 ## API Calls
 
 Use the following code snippet to make API calls to verify KYC with HyperVerge
