@@ -53,7 +53,7 @@ In your Activity or Fragment (ideally, on CTA clicked) add the below code snippe
   **4. Call ```HVAadhaarOfflineManager.startChromeService``` to start the flow and add the above variables as arguments**
 
 ```
-  HVAadhaarOfflineManager.startChromeService(this, customTabsCallback, aadhaarOfflineFileDownloadCallback, INTENT_ACTION);
+  HVAadhaarOfflineManager.startWebService(this, customTabsCallback, aadhaarOfflineFileDownloadCallback, INTENT_ACTION);
 ```
 
 > All the arguments are compulsory and should not be null. ```this``` is the Activity context.
@@ -84,6 +84,6 @@ The ```isRedirected``` value will be set to true and ```file``` value will be th
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        HVAadhaarOfflineManager.unBindChromeService();
+        HVAadhaarOfflineManager.stopWebService();
     }
 ```
