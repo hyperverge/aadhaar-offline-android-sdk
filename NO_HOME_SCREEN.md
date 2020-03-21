@@ -45,6 +45,8 @@ In your Activity or Fragment (ideally, on CTA clicked) add the below code snippe
 ```
   
   **3. Create a String object and assign the exact action value that was assigned to the activity previously in the ```AndroidManifest.xml``` file**
+  
+  Do note that this string must be exactly the same as you defined in the AndroidManifest.xml file. If the string is different the redirection after the download finish will not happen and the users will be stuck on the browser screen
 
 ```
   final String INTENT_ACTION = "co.hyperverge.test.okyc.REDIRECTION";
@@ -58,11 +60,9 @@ In your Activity or Fragment (ideally, on CTA clicked) add the below code snippe
 
 > All the arguments are compulsory and should not be null. ```this``` is the Activity context.
 
-After the completion of the download, the SDK automatically redirects back the user to the Activity that is assigned with the INTENT_ACTION string. 
-We recommend ```<action android:name="" />``` to be declared to the same Activity that starts the Offline KYC flow.
+After the completion of the download, the SDK automatically redirects back the user to the Activity that is assigned with the INTENT_ACTION string.
 
-Once the SDK detects download is completed, an ```Intent``` is created with ```isRedirected``` and ```file``` extras and ```startActivity``` is called. 
-The ```isRedirected``` value will be set to true and ```file``` value will be the downloaded Aadhaar XML file. 
+When the download is completed, ```startActivity``` is called with intent extras - ```isRedirected``` set to true and ```file``` set to downloaded Aadhaar file.
 
   **5. Retrieve the extra intent values and update the UI as shown below in ```onCreate``` method of the activity**
 
@@ -77,8 +77,14 @@ The ```isRedirected``` value will be set to true and ```file``` value will be th
     
   }
 ```
+> **Note**
+> 1. In scenarios where an Activity `A` initiates the KYC flow and an Activity `B` is being used to handle redirection, Activity `A` gets the file from the callback and the same file can be retrieved through intent extra on Activty `B` as well. 
+> 2. In scenarios where the same Activity `A` is being used as both to initiate the KYC flow and to handle redirection, the Activity `A` is recreated on redirection in which case it is recommended to use the file from intent extras in the `onCreate` method of the activity
+
 
   **6. Unbind the chrome service from your Activity ```onDestroy``` method**
+
+This will ensure to stop memory leaks and crashes on your app
 
 ```
     @Override
