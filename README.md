@@ -21,6 +21,7 @@ The SDK supports all Android flavours above 19 (Android 4.4 Kitkat)  and upto An
     1. [Adding the SDK to your project](#1-adding-the-sdk-to-your-project)
     2. [Initialising the SDK](#2-initialising-the-sdk)
 - [SDK CUSTOMIZATIONS](#sdk-customizations)
+    - [Adding API](#adding-apis)
     - [Toolbar customization](#toolbar-customization)
     - [Face match customization](#face-match-customization)
     - [Tutorial customization](#tutorial-customization)
@@ -32,6 +33,7 @@ The SDK supports all Android flavours above 19 (Android 4.4 Kitkat)  and upto An
     - [Example for adding customizations to the KYC flow](#example-for-adding-customizations-to-the-kyc-flow)
     - [Customization table](#customization-table)
 - [HVAadhaarOfflineError](#hvaadhaarofflineerror)
+- [API Calls](#api-calls)
 - [Events Callback](#events-callback)
 - [CONTACT US](#contact-us)
 
@@ -59,7 +61,7 @@ allprojects {
 
 ```
 dependencies {
-  implementation('co.hyperverge:offlinekyc:1.0.6@aar', {
+  implementation('co.hyperverge:offlinekyc:1.2.5@aar', {
     transitive = true
   })
 }
@@ -79,6 +81,8 @@ public void onCreate() {
   HVAadhaarOfflineSDK.init("your_app_id_here", "your_app_key_here");
 }
 ```
+
+> To integrate Offline KYC flow without using HyperVerge home screen, skip the next step and follow the instructions [here](NO_HOME_SCREEN.md)
 
 2. Initiate Aadhaar Offline KYC flow
 
@@ -113,6 +117,14 @@ Where,
 ## SDK CUSTOMIZATIONS
 
 You can customize the Aadhaar Offline requests using the ```AadhaarOfflineConfig```  object.
+
+### Adding APIs
+
+Set the HyperVerge Offline KYC API. This is compulsory and a valid HyperVerge API needs to be set which will be used for processing the XML file and share code on HyperVerge servers
+
+```
+hvAadhaarOfflineConfig.setOfflineKycApi("https://hv-aadhaar-xml.hyperverge.co/v2.1/readAadhaarXml");
+```
 
 ### Toolbar customization
 
@@ -224,8 +236,46 @@ hvAadhaarOfflineConfig.setSelfieImageUri("<imageUri from capture SDK>")
 | ------ | ------ | ------ | ------ |
 | 2 | Internal SDK Error | Occurs when an unexpected error has happened with the HyperSnapSDK. | Notify HyperVerge |
 | 3 | Operation Cancelled By User | When the user closes KYC flow. | Try again |
-| 4 | Permissions not granted by the user | When user denies runtime permissions | In the settings app, give permission and try again. |
+| 4 | Permissions not granted by the user | When user denies runtime permissions | Ask the user to give permission and try again |
+| 5 | Permissions denied permanently by the user | Occurs when user denies permission from the app settings | Open the app settings page and ask the user to manually allow permission |
 | 12 | Network Error | Occurs when the internet is either non-existant or very patchy. | Check internet and try again. If Internet is proper, contact HyperVerge. |
+
+>Note: Refer to the API documentation shared to handle API error and the respective error code
+
+## API Calls
+
+Use the following code snippet to make API calls to verify KYC with HyperVerge
+
+```
+HVAadhaarOfflineNetworkHelper hvAadhaarOfflineNetworkHelper = new HVAadhaarOfflineNetworkHelper();
+
+HVAadhaarOfflineNetworkRequest aadhaarOfflineNetworkRequest = HVAadhaarOfflineNetworkRequest.builder()
+            .aadhaarFile(aadhaarFile) // Downloaded Aadhaar XML file from the Aadhaar website
+            .shareCode("") // Share code entered by the user
+            .email("") // User's email id 
+            .phone("") // User's phone number
+            .build();
+	    
+String aadhaarOfflineApi = "https://hv-aadhaar-xml.hyperverge.co/v2.1/readAadhaarXml";
+
+hvAadhaarOfflineNetworkHelper.makeOfflineKYCCall(aadhaarOfflineApi, aadhaarOfflineNetworkRequest, okycapiCompletionCallback);
+
+```
+
+```HVAadhaarOfflineNetworkRequest``` also accepts ```selfieImage``` and ```faceMatch``` to enable to use it with the HyperSnap Capture SDK to verify face match. 
+
+To set ```transactionId``` and ```referenceId``` with the network call use the ```RequestHeader``` as shown below
+
+```
+RequestHeader requestHeader = RequestHeader.builder()
+				.referenceId("") // reference id as provided by the HyperVerge POC
+				.transactionId("") // transaction id as provided by the HyperVerge POC
+				.build();
+
+HVAadhaarOfflineNetworkRequest aadhaarOfflineNetworkRequest = HVAadhaarOfflineNetworkRequest.builder()
+            .requestHeader(requestHeader)
+            .build();
+```
 
 
 ## Events Callback
