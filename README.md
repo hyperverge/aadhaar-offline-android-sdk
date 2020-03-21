@@ -258,6 +258,18 @@ HVAadhaarOfflineNetworkRequest aadhaarOfflineNetworkRequest = HVAadhaarOfflineNe
 	    
 String aadhaarOfflineApi = "https://hv-aadhaar-xml.hyperverge.co/v2.1/readAadhaarXml";
 
+OKYCAPICompletionCallback okycapiCompletionCallback = new OKYCAPICompletionCallback() {
+	@Override
+	public void onAPISuccess(JSONObject jsonObject) {
+		// Handle successful API call
+	}
+
+	@Override
+	public void onAPIError(HVAadhaarOfflineError hvAadhaarOfflineError) {
+		// Handle error API call
+	}
+};
+
 hvAadhaarOfflineNetworkHelper.makeOfflineKYCCall(aadhaarOfflineApi, aadhaarOfflineNetworkRequest, okycapiCompletionCallback);
 
 ```
