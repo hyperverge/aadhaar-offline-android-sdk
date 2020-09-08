@@ -32,7 +32,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    implementation('co.hyperverge:offlinekyc:1.2.5@aar', {
+    implementation('co.hyperverge:offlinekyc:1.2.8@aar', {
         transitive = true
     })
 }

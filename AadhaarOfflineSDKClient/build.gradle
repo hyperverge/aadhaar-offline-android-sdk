@@ -24,8 +24,10 @@ allprojects {
             url "s3://hvsdk/android/releases"
             credentials(AwsCredentials) {
                 // TODO : Add your accessKey and secretKey
-                accessKey ""
-                secretKey ""
+                //  recommended to configure awscli and use the variables to avoid hard
+                //  coding values
+                accessKey aws_access_key
+                secretKey aws_secret_pass
             }
         }
     }
