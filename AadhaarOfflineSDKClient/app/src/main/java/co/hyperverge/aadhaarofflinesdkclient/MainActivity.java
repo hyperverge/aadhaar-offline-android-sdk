@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     private HVAadhaarOfflineConfig buildConfig() {
         return HVAadhaarOfflineConfig.builder()
                 .shouldShowUploadToolBar(true)
-                .uploadToolbarTitle("Complete your KYC")
+                .uploadToolbarTitle(R.strings.upload_toolbar_title)
                 .showManualFileAttachButton(true)
                 .offlineKycApi("https://hv-aadhaar-xml.hyperverge.co/v2.1/readAadhaarXml")
                 .build();
