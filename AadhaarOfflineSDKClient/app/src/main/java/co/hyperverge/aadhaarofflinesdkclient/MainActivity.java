@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
                         aadhaarOfflineStartCallback, aadhaarOfflineEventsCallback);
             }
         });
+        setUpRateApp();
     }
 
     private HVAadhaarOfflineConfig buildConfig() {
@@ -94,4 +95,23 @@ public class MainActivity extends AppCompatActivity {
                 .offlineKycApi("https://hv-aadhaar-xml.hyperverge.co/v2.1/readAadhaarXml")
                 .build();
     }
+
+    private setUpRateApp() {
+        AppRate.with(this)
+                .setInstallDays(7) // Specifies the number of days after installation, the dialog popup shows.
+                .setLaunchTimes(2) // Specifies the number of times the app must launch by user for the dialog popup to show.
+                .setRemindInterval(3) // Specifies the number of days after "Remind Me Later" is clicked, the dialog popup will show.
+                .setShowLaterButton(true)
+                .setDebug(false) // IMPORTANT: Set true only for testing purposes. DO NOT set true for release-app.
+                .setOnClickButtonListener {
+            // Space to alter the entire functionality of the "dialog popup" for future purposes.
+        }
+      .monitor();
+
+        //To show the dialog popup only if meets ALL specified conditions.
+
+        //To show the dialog popup only if meets ALL specified conditions.
+        AppRate.showRateDialogIfMeetsConditions(this);
+    }
+
 }
