@@ -19,6 +19,7 @@ import co.hyperverge.offlinekyc.aadhaar.HVAadhaarOfflineManager;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getCanonicalName();
+    private static final String KYC_API = "https://hv-aadhaar-xml.hyperverge.co/v2.1/readAadhaarXml";
 
     private HVAadhaarOfflineManager.AadhaarOfflineStartCallback aadhaarOfflineStartCallback =
             new HVAadhaarOfflineManager.AadhaarOfflineStartCallback() {
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 .shouldShowUploadToolBar(true)
                 .uploadToolbarTitle("Complete your KYC")
                 .showManualFileAttachButton(true)
-                .offlineKycApi("https://hv-aadhaar-xml.hyperverge.co/v2.1/readAadhaarXml")
+                .offlineKycApi(KYC_API)
                 .build();
     }
 }
